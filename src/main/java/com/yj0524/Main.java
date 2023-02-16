@@ -1,8 +1,10 @@
 package com.yj0524;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,10 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.io.File;
 
 public class Main extends JavaPlugin implements Listener {
 
     private HashMap<Player, Inventory> chests;
+    private int chestSize;
 
     @Override
     public void onEnable() {
@@ -24,6 +28,13 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
         // Initialize chests map
         chests = new HashMap<>();
+        // Load chest size from config
+        loadConfig();
+        File cfile = new File(getDataFolder(), "config.yml");
+        if (cfile.length() == 0) {
+            getConfig().options().copyDefaults(true);
+            saveConfig();
+        }
         getLogger().info("Plugin Enabled.");
     }
 
@@ -32,6 +43,15 @@ public class Main extends JavaPlugin implements Listener {
         // Clean up chests map
         chests.clear();
         getLogger().info("Plugin Disabled.");
+    }
+
+    private void loadConfig() {
+        // Load chest size from config
+        FileConfiguration config = getConfig();
+        chestSize = config.getInt("chestSize", 27);
+        // Save config
+        config.set("chestSize", chestSize);
+        saveConfig();
     }
 
     @EventHandler
@@ -72,9 +92,9 @@ public class Main extends JavaPlugin implements Listener {
                     player.openInventory(chests.get(player));
                 } else {
                     // Create personal chest
-                    Inventory chest = Bukkit.createInventory(null, 27, "Personal Chest");
+                    Inventory chest = Bukkit.createInventory(null, chestSize, "Personal Chest");
                     // Load chest contents from config
-                    for (int i = 0; i < chest.getSize(); i++) {
+                    for (int i = 0; i < chestSize; i++) {
                         if (getConfig().contains(player.getUniqueId() + "." + i)) {
                             ItemStack item = getConfig().getItemStack(player.getUniqueId() + "." + i);
                             chest.setItem(i, item);
