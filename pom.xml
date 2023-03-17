@@ -6,7 +6,7 @@
 
     <groupId>MinecraftPersonalChestPlugin</groupId>
     <artifactId>MinecraftPersonalChestPlugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <name>MinecraftPersonalChestPlugin</name>
@@ -68,7 +68,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <version>1.19.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
