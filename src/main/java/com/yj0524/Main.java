@@ -45,7 +45,7 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     private void loadConfig() {
-        // Load chest size from config
+        // Load config
         FileConfiguration config = getConfig();
         chestSize = config.getInt("chestSize", 27);
         // Save config
